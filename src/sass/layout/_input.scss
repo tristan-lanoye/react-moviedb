@@ -1,0 +1,119 @@
+@import "../utils/_variables.scss";
+.grid-input {
+    display: grid;
+    grid-template-columns: 1fr 2fr 8rem 2fr 2fr 1fr;
+    grid-template-areas: ". . logo input input .";
+    grid-gap: 2rem;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.95), rgba(0, 0, 0, 0));
+    font-family: $barlow;
+    margin-bottom: 1rem;
+    padding-top: 2rem;
+    .header-logo {
+        grid-area: logo;
+        display: flex;
+        align-items: center;
+        img {
+            width: 100%;
+        }
+    }
+    .header-menu {
+        grid-area: menu;
+        display: none;
+    }
+    @media screen and (max-width: 700px) {
+        grid-template-columns: 1fr 2fr 2fr 2fr 2fr 1fr;
+        grid-template-areas: ". . logo logo . ." ". input input input menu .";
+        .header-logo {
+            justify-content: center;
+        }
+        .header-menu {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    }
+}
+
+.grid-categories {
+    display: grid;
+    grid-template-columns: 0.5fr 0.5fr 1fr 1fr 1fr 0.5fr;
+    grid-template-areas: ". home popular top view ."; // background: linear-gradient(to bottom, rgba(0, 0, 0, 0.95), rgba(0, 0, 0, 0));
+    font-family: $barlow;
+    margin-bottom: 1rem;
+    padding-top: 2rem;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    .header-home {
+        grid-area: home;
+    }
+    .header-popular {
+        grid-area: popular;
+    }
+    .header-top {
+        grid-area: top;
+    }
+    .header-view {
+        grid-area: view;
+    }
+    @media screen and (max-width: 700px) {
+        display: none; 
+    }
+}
+
+.react-autosuggest__container {
+    grid-area: input;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: 1rem 0rem;
+}
+
+.react-autosuggest__input {
+    width: 100%;
+    font-size: 1.1rem;
+    font-family: $barlow, sans-serif;
+    padding: 1rem;
+    @media screen and (min-width: 700px) {
+        border-left: 0.1rem solid $pastelblue;
+    }
+    @media screen and (max-width: 700px) {
+        border-bottom: 0.1rem solid $pastelblue;
+    }
+}
+
+.react-autosuggest__input--focused {
+    outline: none;
+}
+
+.react-autosuggest__input--open {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.react-autosuggest__suggestions-container {
+    display: none;
+}
+
+.react-autosuggest__suggestions-container--open {
+    display: block;
+    position: absolute;
+    top: 100%;
+    width: 100%;
+    background-color: rgba(5, 5, 5, 0.90); // opacity: 0.7; 
+    font-size: 1.1rem;
+    z-index: 15;
+} // .react-autosuggest__suggestions-list {
+// }
+.react-autosuggest__suggestion {
+    cursor: pointer;
+    padding: 1rem 2rem;
+    transition: 0.1s background ease;
+}
+
+.react-autosuggest__suggestion--highlighted {
+    background: rgba(51, 51, 51, 0.644);
+} // .react-autosuggest__suggestion-match {
+//   color: red;
+//   font-weight: bold;
+// }
