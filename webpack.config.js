@@ -24,7 +24,7 @@ var cssConfig = isProd ? cssProd : cssDev
 
 module.exports = {
     entry: {
-        'app': './src/app.jsx',
+        'app': './src/app.js',
         'vendor': './src/vendor.js'
     },
     output: {
