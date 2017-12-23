@@ -1,0 +1,27 @@
+@import "../utils/_variables.scss";
+
+.grid-movie {
+    display: grid;
+    grid-template-columns: 1fr 1fr 2.5fr 0.5fr;
+    grid-template-areas: 
+    ". poster . ."; 
+    font-family: $barlow, sans-serif;   
+    .movie-title {
+        grid-area: title;
+        // word-break: break-all; 
+        .title {
+            font-size: 4rem; 
+        }
+        .date {
+            font-size: 2rem; 
+            margin-left: 1rem;
+        }
+    }
+    .movie-tagline {
+        grid-area: tagline; 
+    }
+    .movie-poster {
+        grid-area: poster;
+        width: 100%; 
+    }
+}
