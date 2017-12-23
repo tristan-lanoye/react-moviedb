@@ -9,7 +9,7 @@ var cssDev = ['style-loader', 'css-loader', 'sass-loader']
 var cssProd = ExtractTextPlugin.extract({
     use: (['css-loader', 'sass-loader']),
     fallback: 'style-loader',
-    publicPath: '/dist'
+    publicPath: '/docs'
 })
 var cssConfig = isProd ? cssProd : cssDev
 
@@ -19,7 +19,7 @@ module.exports = {
         'vendor': './src/vendor.js'
     },
     output: {
-        path: path.resolve(__dirname, 'dist'),
+        path: path.resolve(__dirname, 'docs'),
         filename: 'scripts/[name].bundle.js'
     },
     module: {
@@ -49,7 +49,7 @@ module.exports = {
         }
     },
     devServer: {
-        contentBase: path.join(__dirname, 'dist'),
+        contentBase: path.join(__dirname, 'docs'),
         compress: true,
         hot: true,
         stats: 'errors-only',
