@@ -1,0 +1,91 @@
+@import '../utils/_variables.scss';
+
+
+.box-suggestion {
+    display: grid;
+    grid-template-columns: 3rem 3fr 1fr;  
+    // border: 1px solid black; 
+    align-items: center; 
+    width: 100%;    
+    img {
+        width: 2rem;
+    }
+    .box-vote {
+        justify-self: end;
+        font-size: 0.8rem; 
+        .fa-star {
+            position: relative;
+            bottom: 2px;
+            opacity: 0.8; 
+            font-size: 0.6rem; 
+            margin-right: 0.5rem;
+        }
+    }
+    .box-date {
+        padding-left: 0.5rem; 
+        color: $grey; 
+        opacity: 0.5; 
+        font-size: 0.9rem;
+    }
+}
+
+.react-autosuggest__container {
+    grid-area: input;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: 1rem 0rem;
+}
+
+.react-autosuggest__input {
+    width: 100%;
+    font-size: 1.1rem;
+    font-family: $barlow, sans-serif;
+    padding: 1rem;
+    @media screen and (min-width: 700px) {
+        border-left: 0.1rem solid $green;
+    }
+    @media screen and (max-width: 700px) {
+        border-bottom: 0.1rem solid $green;
+    }
+}
+
+.react-autosuggest__suggestions-container {
+    opacity: 0; 
+    transform: translateX(-10px); 
+    transition: 0.3s all ease; 
+    pointer-events: none; 
+}
+
+.react-autosuggest__suggestions-container--open {
+    opacity: 1; 
+    position: absolute;
+    transform: translateX(0); 
+    top: 100%;
+    left: 0;
+    pointer-events: all;
+    width: 100%;
+    background-color: rgba(5, 5, 5, 0.95);
+    z-index: 15;
+    @media screen and (max-width: 850px) {
+        width: 120%; 
+    }
+    @media screen and (max-width: 430px) {
+        width: 150%; 
+    }
+    @media screen and (max-width: 350px) {
+        left: -20%;
+        width: 180%;
+    }
+} 
+
+.react-autosuggest__suggestion {
+    cursor: pointer;
+    padding: 0.7rem 1.2rem 0.7rem 1rem;
+    transition: 0.1s background ease;
+}
+
+.react-autosuggest__suggestion--highlighted {
+    background: rgba(51, 51, 51, 0.644);
+}

@@ -2,9 +2,12 @@
 @import "utils/_variables";
 
 // layout
-@import 'layout/_body';
-@import 'layout/_input';
-@import 'layout/_homepage';
-@import 'layout/_moviepage';
+@import 'layout/_global';
+@import 'layout/_autosuggest';
+@import 'layout/_grid-input';
+@import 'layout/_grid-input-cat';
+@import 'layout/_grid-home';
+@import 'layout/_grid-movie';
+@import 'layout/_footer';
 
 

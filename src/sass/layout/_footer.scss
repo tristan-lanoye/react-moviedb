@@ -1,0 +1,21 @@
+@import '../utils/_variables.scss';
+
+.footer {
+    font-family: $barlow;
+    color: $grey;
+    opacity: 0.5;
+    font-size: 0.9rem;
+    padding: 3rem 0rem;
+    a {
+        span{
+            padding: 0rem 0.5rem;
+            transition: all 0.2s ease;
+        }
+        &:hover {
+            span {
+                color: $white; 
+                opacity: 0.7;
+            }
+        }
+    }
+}

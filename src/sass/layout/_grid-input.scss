@@ -1,0 +1,74 @@
+@import '../utils/_variables.scss';
+.grid-input {
+    display: grid;
+    grid-template-columns: 1fr 2fr 8rem 2fr 2fr 1fr;
+    grid-template-areas: ". . logo input input .";
+    grid-gap: 2rem;
+    font-family: $barlow;
+    margin-bottom: 1rem;
+    padding-top: 3rem;
+    .header-logo {
+        grid-area: logo;
+        display: flex;
+        align-items: center;
+        img {
+            width: 100%;
+        }
+    }
+    .header-menu {
+        grid-area: menu;
+        position: relative;
+        display: none;
+        .fa-bars {
+            transition: color 0.2s ease;
+        }
+        .menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            padding: 0.2rem;
+            background: rgba(5, 5, 5, 0.9);
+            z-index: 20;
+            text-align: center;
+            opacity: 0; 
+            transform-origin: 100% 0; 
+            transform: translateX(20px) scale(0.8,0.8);
+            pointer-events: none;
+            transition: 0.1s all ease; 
+            will-change: opacity, transform; 
+            .relative {
+                display: block;
+                padding: 1rem 2rem;
+                &:hover {
+                    background: rgba(51, 51, 51, 0.644);
+                }
+            .fa-home {
+                    color: $green; 
+                }
+            }
+            &.active {
+                opacity: 1;
+                transform: translateX(0) scale(1);
+                pointer-events: all; 
+            }
+        }
+        &:hover {
+            cursor: pointer;
+            .fa-bars {
+                color: $green;
+            }
+        }
+    }
+    @media screen and (max-width: 700px) {
+        grid-template-columns: 1fr 2fr 2fr 2fr 1.5fr 1fr;
+        grid-template-areas: ". . logo logo . ." ". input input input menu .";
+        .header-logo {
+            justify-content: center;
+        }
+        .header-menu {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    }
+}

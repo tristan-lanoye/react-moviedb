@@ -61,7 +61,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "59ff29ff06d774f1137a"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "86860f88b6d9ddd16688"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -12278,6 +12278,39 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 
 /***/ }),
 
+/***/ "./src/components/footer.jsx":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__("./node_modules/react/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+
+
+class Footer extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
+    render() {
+        return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            'div',
+            { className: 'footer relative center-children' },
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'a',
+                { href: 'https://github.com/tristan-lanoye/react-moviedb', target: 'blank' },
+                ' ',
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'span',
+                    null,
+                    'View code on Github'
+                ),
+                ' ',
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('span', { className: 'fab fa-github' })
+            )
+        );
+    }
+}
+/* unused harmony export default */
+
+
+/***/ }),
+
 /***/ "./src/components/homecard.jsx":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -12333,19 +12366,23 @@ class Items extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
                 { className: 'infos-container' },
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                     'div',
-                    null,
+                    { className: 'center-children infos-date' },
+                    `${data.month} ${data.day} ${data.year}`
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'div',
+                    { className: 'center-children infos-title' },
                     data.title
                 ),
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                     'div',
-                    null,
-                    data.date
-                ),
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'div',
-                    null,
+                    { className: 'center-children infos-vote' },
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('span', { className: 'far fa-star' }),
-                    data.vote
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'span',
+                        null,
+                        data.vote
+                    )
                 )
             )
         );
@@ -12366,6 +12403,8 @@ class Items extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_classnames___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_classnames__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__homecard_jsx__ = __webpack_require__("./src/components/homecard.jsx");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__moviecard_jsx__ = __webpack_require__("./src/components/moviecard.jsx");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__footer_jsx__ = __webpack_require__("./src/components/footer.jsx");
+
 
 
 
@@ -12375,12 +12414,34 @@ class Items extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 const html = document.querySelector('html');
 const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
+const randomNumber = (min, max) => {
+    return Math.floor(Math.random() * (max - min + 1) + min);
+};
+
 class Input extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
     constructor(props) {
         super(props);
 
-        this.handleHomecardClick = data => {
-            const url = `https://api.themoviedb.org/3/movie/${data.id}?api_key=36aa851f78a4635a5a8c775eefe9ffe9&append_to_response=credits`;
+        this.handleClickMenu = e => {
+            this.setState({
+                menu: !this.state.menu
+            });
+        };
+
+        this.handleClickWindow = e => {
+            const headerMenu = document.querySelector('.header-menu');
+            const menu = document.querySelector('.menu');
+            if (this.state.menu) {
+                if (e.clientX > headerMenu.getBoundingClientRect().left && e.clientX < headerMenu.getBoundingClientRect().left + headerMenu.getBoundingClientRect().width && e.clientY > headerMenu.getBoundingClientRect().top && e.clientY < headerMenu.getBoundingClientRect().top + headerMenu.getBoundingClientRect().height) {
+                    return;
+                } else {
+                    this.setState({ menu: false });
+                }
+            }
+        };
+
+        this.handleChildClick = data => {
+            const url = `https://api.themoviedb.org/3/movie/${data.id}?api_key=36aa851f78a4635a5a8c775eefe9ffe9&append_to_response=credits,recommendations`;
             this.fetchMovie(url);
         };
 
@@ -12413,12 +12474,35 @@ class Input extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
         };
 
         this.fetchCategories = (url, category) => {
+            let results = [],
+                random = randomNumber(0, 19);
             fetch(url).then(res => res.json()).then(data => {
-                let results = [];
                 data.results.map(movie => {
-                    results.push({ id: movie.id, title: movie.title, date: movie.release_date, vote: movie.vote_average, poster: movie.poster_path, backdrop: movie.backdrop_path });
+                    let tempReleaseDate = '',
+                        tempDate = [],
+                        tempDateString = '';
+                    tempReleaseDate = movie.release_date;
+                    tempReleaseDate += '-';
+                    for (let i = 0; i < tempReleaseDate.length; i++) {
+                        if (tempReleaseDate[i] != '-') {
+                            tempDateString += tempReleaseDate[i];
+                        } else {
+                            tempDate.push(tempDateString);
+                            tempDateString = '';
+                        }
+                    }
+                    results.push({
+                        id: movie.id,
+                        title: movie.title,
+                        year: `${tempDate[0]}`,
+                        month: `${tempDate[1]}`,
+                        day: `${tempDate[2]}`,
+                        vote: movie.vote_average,
+                        poster: movie.poster_path,
+                        backdrop: movie.backdrop_path
+                    });
                 });
-                html.style.background = `url('https://image.tmdb.org/t/p/original${results[0].backdrop}') center center / cover no-repeat fixed`;
+                html.style.background = `url('https://image.tmdb.org/t/p/w1280${results[random].backdrop}') center center / cover no-repeat fixed`;
                 if (category === 'popular') {
                     this.setState({
                         movieID: undefined,
@@ -12464,7 +12548,7 @@ class Input extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
                 console.log(data);
                 for (let i = 0; i < 5; i++) {
                     const res = data.results[i];
-                    temp.push({ title: res.title, id: res.id, date: res.release_date, vote: res.vote_average });
+                    temp.push({ title: res.title, id: res.id, date: res.release_date, vote: res.vote_average, poster: res.poster_path });
                 }
                 this.setState({ suggestions: temp });
             }).catch(err => console.log('Query did not match any movie'));
@@ -12472,13 +12556,15 @@ class Input extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 
         this.fetchMovie = url => {
             let tempGenres = [],
+                tempMainActors = [],
                 tempActors = [],
+                tempCrew = [],
+                tempRecommendations = [],
+                tempDirector = {},
                 tempReleaseDate = '',
                 tempDate = [],
                 tempDateString = '';
             fetch(url).then(res => res.json()).then(data => {
-                console.log(data);
-                data.genres.map(genre => tempGenres.push(genre.name));
                 tempReleaseDate = data.release_date;
                 tempReleaseDate += '-';
                 for (let i = 0; i < tempReleaseDate.length; i++) {
@@ -12489,7 +12575,51 @@ class Input extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
                         tempDateString = '';
                     }
                 }
-                console.log(tempDate);
+                data.genres.map(genre => tempGenres.push(genre.name));
+                data.credits.cast.map((actor, i) => {
+                    tempActors.push({ character: actor.character, name: actor.name, photo: actor.profile_path });
+                    if (i < 4) {
+                        tempMainActors.push({ character: data.credits.cast[i].character, name: data.credits.cast[i].name, photo: data.credits.cast[i].profile_path });
+                    }
+                });
+                data.credits.crew.map((crew, i) => {
+                    tempCrew.push({ name: crew.name, job: crew.job, department: crew.department, photo: crew.profile_path });
+                    if (tempDirector.name == undefined && crew.job == 'Director') {
+                        tempDirector = {
+                            name: data.credits.crew[i].name,
+                            job: data.credits.crew[i].job,
+                            photo: data.credits.crew[i].profile_path
+                        };
+                    }
+                });
+                data.recommendations.results.map((movie, i) => {
+                    let newReleaseDate = '',
+                        newDate = [],
+                        newDateString = '';
+                    newReleaseDate = movie.release_date;
+                    newReleaseDate += '-';
+                    if (i < 6) {
+                        for (let i = 0; i < newReleaseDate.length; i++) {
+                            if (newReleaseDate[i] != '-') {
+                                newDateString += newReleaseDate[i];
+                            } else {
+                                newDate.push(newDateString);
+                                newDateString = '';
+                            }
+                        }
+                        tempRecommendations.push({
+                            id: movie.id,
+                            title: movie.title,
+                            year: `${newDate[0]}`,
+                            month: `${newDate[1]}`,
+                            day: `${newDate[2]}`,
+                            vote: movie.vote_average,
+                            poster: movie.poster_path
+                        });
+                    } else {
+                        return;
+                    }
+                });
                 this.setState({
                     homepage: false,
                     popular: false,
@@ -12499,6 +12629,11 @@ class Input extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
                     movieID: data.id,
                     title: data.title,
                     originalTitle: data.original_title,
+                    director: tempDirector,
+                    mainActors: tempMainActors,
+                    actors: tempActors,
+                    crew: tempCrew,
+                    recommendations: tempRecommendations,
                     date: `${months[parseInt(tempDate[1]) - 1]} ${tempDate[2]}, ${tempDate[0]}`,
                     tagline: data.tagline,
                     overview: data.overview,
@@ -12511,7 +12646,6 @@ class Input extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
                     backdropPath: data.backdrop_path,
                     genres: tempGenres
                 });
-                console.log(this.state);
             }).catch(err => console.log('Movie not found'));
         };
 
@@ -12523,7 +12657,7 @@ class Input extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
         };
 
         this.onSuggestionSelected = (event, { suggestion, suggestionValue, suggestionIndex, sectionIndex, method }) => {
-            const url = `https://api.themoviedb.org/3/movie/${suggestion.id}?api_key=36aa851f78a4635a5a8c775eefe9ffe9&append_to_response=credits`;
+            const url = `https://api.themoviedb.org/3/movie/${suggestion.id}?api_key=36aa851f78a4635a5a8c775eefe9ffe9&append_to_response=credits,recommendations`;
             this.fetchMovie(url);
         };
 
@@ -12544,20 +12678,29 @@ class Input extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
             for (let i = 0; i < 4; i++) {
                 temp += suggestion.date[i];
             }
+            let poster = 'https://image.tmdb.org/t/p/w92';
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 'div',
-                null,
+                { className: 'box-suggestion' },
+                suggestion.poster != null && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { src: poster + suggestion.poster, alt: '', className: 'box-image' }),
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                     'div',
-                    null,
-                    suggestion.title,
-                    ' (',
-                    temp,
-                    ')'
+                    { className: 'box-title' },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'span',
+                        null,
+                        suggestion.title
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'span',
+                        { className: 'box-date' },
+                        temp
+                    )
                 ),
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                     'div',
-                    null,
+                    { className: 'box-vote' },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('span', { className: 'far fa-star' }),
                     suggestion.vote
                 )
             );
@@ -12571,11 +12714,13 @@ class Input extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
             homepage: true,
             popular: true,
             top: false,
-            upcoming: false
+            upcoming: false,
+            menu: false
         };
     }
 
     render() {
+        console.log('render');
         const { value, suggestions } = this.state;
         const logo = 'https://www.themoviedb.org/assets/static_cache/27b65cb40d26f78354a4ac5abf87b2be/' + 'images/v4/logos/powered-by-rectangle-green.svg';
         const autoFocus = 'autofocus';
@@ -12585,33 +12730,33 @@ class Input extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
             onChange: this.onChange,
             autoFocus
         };
-        const home = __WEBPACK_IMPORTED_MODULE_2_classnames___default()({
-            'header-home': true,
-            'center-children': true,
-            'relative': true,
-            'active': this.state.homepage
-        });
+        const home = __WEBPACK_IMPORTED_MODULE_2_classnames___default()({ 'header-home': true, 'center-children': true, 'relative': true, 'active': this.state.homepage });
         const popular = __WEBPACK_IMPORTED_MODULE_2_classnames___default()({
             'header-popular': true,
+            'header-category': true,
             'center-children': true,
             'relative': true,
             'active': this.state.homepage && this.state.popular
         });
         const top = __WEBPACK_IMPORTED_MODULE_2_classnames___default()({
             'header-top': true,
+            'header-category': true,
             'center-children': true,
             'relative': true,
             'active': this.state.homepage && this.state.top
         });
         const upcoming = __WEBPACK_IMPORTED_MODULE_2_classnames___default()({
             'header-upcoming': true,
+            'header-category': true,
             'center-children': true,
             'relative': true,
             'active': this.state.homepage && this.state.upcoming
         });
+        const menu = __WEBPACK_IMPORTED_MODULE_2_classnames___default()({ 'menu': true, 'active': this.state.menu });
+        const github = __WEBPACK_IMPORTED_MODULE_2_classnames___default()({ 'header-github': true, 'center-children': true, 'relative': true });
         return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
             'div',
-            { className: 'whatever' },
+            { className: 'whatever', onClick: this.handleClickWindow },
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 'div',
                 { className: 'header' },
@@ -12633,8 +12778,59 @@ class Input extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
                         inputProps: inputProps }),
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                         'div',
-                        { className: 'header-menu relative' },
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('span', { className: 'fas fa-bars' })
+                        { className: 'header-menu relative', onClick: this.handleClickMenu },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('span', { className: 'fas fa-bars' }),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'div',
+                            { className: menu },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'div',
+                                { className: home, onClick: this.handleClickHome },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('span', { className: 'fas fa-home' })
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'div',
+                                { className: popular, onClick: this.handleClickPopular },
+                                ' ',
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    'span',
+                                    null,
+                                    'Popular'
+                                ),
+                                ' '
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'div',
+                                { className: top, onClick: this.handleClickTop },
+                                ' ',
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    'span',
+                                    null,
+                                    'Top Rated'
+                                ),
+                                ' '
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'div',
+                                { className: upcoming, onClick: this.handleClickUpcoming },
+                                ' ',
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    'span',
+                                    null,
+                                    'Upcoming'
+                                ),
+                                ' '
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'a',
+                                {
+                                    className: github,
+                                    href: 'https://github.com/tristan-lanoye/react-moviedb',
+                                    target: 'blank',
+                                    title: 'View code on github' },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('span', { className: 'fab fa-github' })
+                            )
+                        )
                     )
                 ),
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -12671,10 +12867,22 @@ class Input extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
                             null,
                             'upcoming'
                         )
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'div',
+                        { className: github },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'a',
+                            {
+                                href: 'https://github.com/tristan-lanoye/react-moviedb',
+                                target: 'blank',
+                                title: 'View code on github' },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('span', { className: 'fab fa-github' })
+                        )
                     )
                 )
             ),
-            this.state.homepage ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__homecard_jsx__["a" /* default */], { data: this.state, give: this.handleHomecardClick }) : __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__moviecard_jsx__["a" /* default */], { data: this.state })
+            this.state.homepage ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__homecard_jsx__["a" /* default */], { data: this.state, give: this.handleChildClick }) : __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__moviecard_jsx__["a" /* default */], { data: this.state, give: this.handleChildClick })
         );
     }
 
@@ -12699,15 +12907,31 @@ class Input extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 const html = document.querySelector('html');
 
 class Moviecard extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
+    constructor(...args) {
+        var _temp;
+
+        return _temp = super(...args), this.handleClick = data => {
+            this.props.give(data);
+        }, _temp;
+    }
+
     render() {
         const data = this.props.data;
-        const poster = `https://image.tmdb.org/t/p/original${data.posterPath}`;
-        const backdrop = `https://image.tmdb.org/t/p/original${data.backdropPath}`;
-        html.style.background = `url(${backdrop}) center center / cover no-repeat fixed`;
+        const poster = `https://image.tmdb.org/t/p/w500${data.posterPath}`;
+        const backdrop = `https://image.tmdb.org/t/p/w1280${data.backdropPath}`;
+        if (data.backdropPath != null) {
+            html.style.background = `url(${backdrop}) center center / cover no-repeat fixed`;
+        } else {
+            html.style.background = 'rgb(34,34,34)';
+        }
         return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
             'div',
             { className: 'grid-movie' },
-            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { src: poster, className: 'movie-poster relative' }),
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'div',
+                { className: 'movie-poster relative' },
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { src: poster, alt: '' })
+            ),
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 'div',
                 { className: 'grid-movie-details' },
@@ -12734,13 +12958,20 @@ class Moviecard extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component 
                         'span',
                         { className: 'movie-runtime' },
                         Math.floor(data.runtime / 60),
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            'strong',
-                            null,
-                            'h'
-                        ),
+                        'h',
                         data.runtime % 60
                     )
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'div',
+                    { className: 'movie-genres' },
+                    data.genres.map((genre, i) => {
+                        return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'span',
+                            { className: `genre genre-${i}`, key: i },
+                            i != data.genres.length - 1 ? `${genre}, ` : `${genre}`
+                        );
+                    })
                 ),
                 data.tagline != "" && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                     'div',
@@ -12751,13 +12982,112 @@ class Moviecard extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component 
                     'div',
                     { className: 'movie-overview' },
                     data.overview
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'div',
+                    { className: 'movie-director' },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'span',
+                        { className: 'director-job' },
+                        'Director'
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'span',
+                        { className: 'director-name' },
+                        data.director.name
+                    )
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'div',
+                    { className: 'movie-actors' },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'span',
+                        { className: 'main-cast' },
+                        'Main Cast'
+                    ),
+                    data.mainActors.map((actor, i) => {
+                        return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'span',
+                            { className: `actor actor-${i}`, key: i },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'span',
+                                null,
+                                i != data.mainActors.length - 1 ? `${actor.name}, ` : `${actor.name}`
+                            )
+                        );
+                    })
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'div',
+                    { className: 'see-full' },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'span',
+                        null,
+                        'See full cast and details'
+                    )
+                )
+            ),
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'div',
+                { className: 'grid-recommendations' },
+                data.recommendations != '' && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'span',
+                    { className: 'title' },
+                    'Recommendations'
+                ),
+                data.recommendations.map((movie, i) => {
+                    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(Items, { data: movie, key: i, give: this.handleClick });
+                })
+            )
+        );
+    }
+
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = Moviecard;
+
+
+class Items extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
+    constructor(...args) {
+        var _temp2;
+
+        return _temp2 = super(...args), this.handleClick = () => {
+            this.props.give(this.props.data);
+        }, _temp2;
+    }
+
+    render() {
+        const data = this.props.data;
+        return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            'div',
+            { className: 'recommendation', onClick: this.handleClick },
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { src: `https://image.tmdb.org/t/p/w185${data.poster}`, alt: '' }),
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'div',
+                { className: 'infos-container' },
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'div',
+                    { className: 'center-children infos-date' },
+                    `${data.month} ${data.day} ${data.year}`
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'div',
+                    { className: 'center-children infos-title' },
+                    data.title
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'div',
+                    { className: 'center-children infos-vote' },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('span', { className: 'far fa-star' }),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'span',
+                        null,
+                        data.vote
+                    )
                 )
             )
         );
     }
 }
-/* harmony export (immutable) */ __webpack_exports__["a"] = Moviecard;
-
 
 /***/ }),
 
