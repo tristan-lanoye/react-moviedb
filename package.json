@@ -32,6 +32,7 @@
     "clean": "rimraf ./docs/*"
   },
   "dependencies": {
+    "classnames": "^2.2.5",
     "react": "^16.0.0",
     "react-autosuggest": "^9.3.2",
     "react-dom": "^16.0.0"

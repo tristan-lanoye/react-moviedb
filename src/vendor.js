@@ -1,4 +1,4 @@
-import 'libcss/reset.min.css'
-import 'libjs/fontawesome-all.min'
-import 'libjs/modernizr-custom'
+import './lib/css/reset.min.css'
+import './lib/js/fontawesome-all.min'
+import './lib/js/modernizr-custom'
 // import * as modernizr from 'libjs/modernizr-custom'

@@ -34,7 +34,8 @@ module.exports = {
     module: {
         rules: [{
                 test: /\.jsx?/,
-                exclude: [/node_modules/, path.resolve(__dirname, './src/lib')],
+                // exclude: [/node_modules/, path.resolve(__dirname, './src/lib')],
+                // exclude: /node_modules/,
                 use: 'babel-loader',
             },
             {
@@ -56,17 +57,11 @@ module.exports = {
             }
         ]
     },
-    resolve: {
-        alias: {
-            libcss: path.resolve(__dirname, './src/lib/css'),
-            libjs: path.resolve(__dirname, './src/lib/js')
-        }
-    },
     devServer: {
         contentBase: path.join(__dirname, 'docs'),
-        compress: true,
+        // compress: true,
         hot: true,
-        stats: 'errors-only',
+        // stats: 'errors-only',
         open: true
     },
     plugins: [
@@ -84,7 +79,7 @@ module.exports = {
             template: './src/index.ejs'
         }),
         new webpack.HotModuleReplacementPlugin(),
-        new webpack.NamedModulesPlugin(),
-        new UglifyJsPlugin()
+        new webpack.NamedModulesPlugin()
+        // new UglifyJsPlugin()
     ]
 }

@@ -1,13 +1,30 @@
 @import "../utils/_variables.scss";
+.header {
+    position: relative;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.95), rgba(0, 0, 0, 0));
+    &:after {
+        content: "";
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 75%;
+        height: 1px;
+        // background: rgba(112, 106, 106, 0.267);
+        background: rgba(12, 132, 134, 0.2);
+        z-index: 15;
+        backface-visibility: hidden; 
+    }
+}
+
 .grid-input {
     display: grid;
     grid-template-columns: 1fr 2fr 8rem 2fr 2fr 1fr;
     grid-template-areas: ". . logo input input .";
     grid-gap: 2rem;
-    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.95), rgba(0, 0, 0, 0));
     font-family: $barlow;
     margin-bottom: 1rem;
-    padding-top: 2rem;
+    padding-top: 3rem;
     .header-logo {
         grid-area: logo;
         display: flex;
@@ -37,26 +54,144 @@
 .grid-categories {
     display: grid;
     grid-template-columns: 0.5fr 0.5fr 1fr 1fr 1fr 0.5fr;
-    grid-template-areas: ". home popular top view ."; // background: linear-gradient(to bottom, rgba(0, 0, 0, 0.95), rgba(0, 0, 0, 0));
+    grid-template-areas: ". home popular top upcoming ."; // background: linear-gradient(to bottom, rgba(0, 0, 0, 0.95), rgba(0, 0, 0, 0));
     font-family: $barlow;
-    margin-bottom: 1rem;
-    padding-top: 2rem;
-    text-transform: uppercase;
-    font-size: 0.9rem;
+    padding: 1rem 0rem 1.5rem 0rem;
+    text-transform: capitalize;
     .header-home {
         grid-area: home;
+        transition: color 0.15s ease;
+        padding: 1rem 0rem;
+        &:hover {
+            color: $pastelblue;
+            cursor: pointer;
+        }
+        &.active {
+            color: $pastelblue;
+        }
     }
     .header-popular {
         grid-area: popular;
+        padding: 1rem 0rem;
+        span {
+            position: relative;
+            transition: all 0.2 ease;
+            &:before {
+                content: "";
+                position: absolute;
+                top: 50%;
+                left: 0;
+                width: 100%;
+                height: 1px;
+                transform: scale(0);
+                opacity: 0; 
+                transform-origin: 0 50%;
+                background: $pastelblue;
+                transition: all 0.2s linear;
+            }
+        }
+        &:hover {
+            cursor: pointer;
+            span {
+                opacity: 0.8;
+                &:before {
+                    transform: scale(1);
+                    opacity: 0.5;
+                }
+            }
+        }
+        &.active {
+            span {
+                opacity: 0.7;
+                &:before {
+                    transform: scale(1);
+                    opacity: 0.8;
+                }
+            }
+        }
     }
     .header-top {
         grid-area: top;
+        padding: 1rem 0rem;
+        span {
+            position: relative;
+            transition: all 0.2 ease;
+            &:before {
+                content: "";
+                position: absolute;
+                top: 50%;
+                left: 0;
+                width: 100%;
+                height: 1px;
+                transform: scale(0);
+                opacity: 0; 
+                transform-origin: 0 50%;
+                background: $pastelblue;
+                transition: all 0.2s linear;
+            }
+        }
+        &:hover {
+            cursor: pointer;
+            span {
+                opacity: 0.8;
+                &:before {
+                    transform: scale(1);
+                    opacity: 0.5;
+                }
+            }
+        }
+        &.active {
+            span {
+                opacity: 0.7;
+                &:before {
+                    transform: scale(1);
+                    opacity: 0.8;
+                }
+            }
+        }
     }
-    .header-view {
-        grid-area: view;
+    .header-upcoming {
+        grid-area: upcoming;
+        padding: 1rem 0rem;
+        span {
+            position: relative;
+            transition: all 0.2 ease;
+            &:before {
+                content: "";
+                position: absolute;
+                top: 50%;
+                left: 0;
+                width: 100%;
+                height: 1px;
+                transform: scale(0);
+                opacity: 0; 
+                transform-origin: 0 50%;
+                background: $pastelblue;
+                transition: all 0.2s linear;
+            }
+        }
+        &:hover {
+            cursor: pointer;
+            span {
+                opacity: 0.8;
+                &:before {
+                    transform: scale(1);
+                    opacity: 0.5;
+                }
+            }
+        }
+        &.active {
+            span {
+                opacity: 0.7;
+                &:before {
+                    transform: scale(1);
+                    opacity: 0.8;
+                }
+            }
+        }
     }
     @media screen and (max-width: 700px) {
-        display: none; 
+        display: none;
     }
 }
 
