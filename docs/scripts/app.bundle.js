@@ -61,7 +61,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "86860f88b6d9ddd16688"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "7c739c2c743efa03feae"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -12503,6 +12503,7 @@ class Input extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
                     });
                 });
                 html.style.background = `url('https://image.tmdb.org/t/p/w1280${results[random].backdrop}') center center / cover no-repeat fixed`;
+                html.style.minHeight = '100%';
                 if (category === 'popular') {
                     this.setState({
                         movieID: undefined,
@@ -12921,6 +12922,7 @@ class Moviecard extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component 
         const backdrop = `https://image.tmdb.org/t/p/w1280${data.backdropPath}`;
         if (data.backdropPath != null) {
             html.style.background = `url(${backdrop}) center center / cover no-repeat fixed`;
+            html.style.minHeight = '100%';
         } else {
             html.style.background = 'rgb(34,34,34)';
         }

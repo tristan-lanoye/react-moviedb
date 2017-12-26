@@ -225,6 +225,7 @@ export default class Input extends React.Component {
                     })
                 })
             html.style.background = `url('https://image.tmdb.org/t/p/w1280${results[random].backdrop}') center center / cover no-repeat fixed`
+            html.style.minHeight = '100%'
             if (category === 'popular') {
                 this.setState({
                     movieID: undefined,

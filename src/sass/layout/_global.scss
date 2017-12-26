@@ -1,5 +1,9 @@
 @import "../utils/_variables.scss"; 
 
+html {
+    min-height: 100%; 
+}
+
 html,
 body {
     width: 100%;

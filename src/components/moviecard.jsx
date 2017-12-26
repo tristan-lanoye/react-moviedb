@@ -8,6 +8,7 @@ export default class Moviecard extends React.Component {
         const backdrop = `https://image.tmdb.org/t/p/w1280${data.backdropPath}`
         if (data.backdropPath != null) {
             html.style.background = `url(${backdrop}) center center / cover no-repeat fixed`
+            html.style.minHeight = '100%'
         } else {
             html.style.background = 'rgb(34,34,34)'
         }
