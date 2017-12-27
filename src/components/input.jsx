@@ -1,9 +1,9 @@
 import React from 'react'
 import Autosuggest from 'react-autosuggest'
 import classNames from 'classnames'
-import Homecard from './homecard.jsx'
-import Moviecard from './moviecard.jsx'
-import Footer from './footer.jsx'
+import Homecard from './Homecard.jsx'
+import Moviecard from './Moviecard.jsx'
+import Footer from './Footer.jsx'
 
 const html = document.querySelector('html')
 const months = [
@@ -20,6 +20,8 @@ const months = [
     'November',
     'December'
 ]
+const nullw92 = require('../images/nullw92.png');
+const logo = require('../images/logo.svg')
 
 const randomNumber = (min, max) => {
     return Math.floor(Math.random() * (max - min + 1) + min)
@@ -43,10 +45,7 @@ export default class Input extends React.Component {
     }
 
     render() {
-        console.log('render')
         const {value, suggestions} = this.state
-        const logo = 'https://www.themoviedb.org/assets/static_cache/27b65cb40d26f78354a4ac5abf87b2be/' +
-                'images/v4/logos/powered-by-rectangle-green.svg'
         const autoFocus = 'autofocus'
         const inputProps = {
             placeholder: "Search movie ...",
@@ -82,7 +81,7 @@ export default class Input extends React.Component {
             <div className='whatever' onClick={this.handleClickWindow}>
                 <div className='header'>
                     <div className='grid-input'>
-                        <div className='header-logo relative'><img src={logo} alt="TMDB"/></div>
+                        <div className='header-logo relative' onClick={this.handleClickHome}><img src={logo} alt="TMDB"/></div>
                         <Autosuggest
                             suggestions={suggestions}
                             onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
@@ -97,9 +96,15 @@ export default class Input extends React.Component {
                                 <div className={home} onClick={this.handleClickHome}>
                                     <span className='fas fa-home'></span>
                                 </div>
-                                <div className={popular} onClick={this.handleClickPopular}> <span>Popular</span> </div>
-                                <div className={top} onClick={this.handleClickTop}> <span>Top Rated</span> </div>
-                                <div className={upcoming} onClick={this.handleClickUpcoming}> <span>Upcoming</span> </div>
+                                <div className={popular} onClick={this.handleClickPopular}>
+                                    <span>Popular</span>
+                                </div>
+                                <div className={top} onClick={this.handleClickTop}>
+                                    <span>Top Rated</span>
+                                </div>
+                                <div className={upcoming} onClick={this.handleClickUpcoming}>
+                                    <span>Upcoming</span>
+                                </div>
                                 <a
                                     className={github}
                                     href='https://github.com/tristan-lanoye/react-moviedb'
@@ -136,6 +141,7 @@ export default class Input extends React.Component {
                 {this.state.homepage
                     ? <Homecard data={this.state} give={this.handleChildClick}/>
                     : <Moviecard data={this.state} give={this.handleChildClick}/>}
+                <Footer data={this.state}/>
             </div>
         )
     }
@@ -195,7 +201,7 @@ export default class Input extends React.Component {
 
     fetchCategories = (url, category) => {
         let results = [],
-            random = randomNumber(0, 19)
+            random = randomNumber(0, 10)
         fetch(url).then((res) => res.json()).then((data) => {
             data
                 .results
@@ -268,7 +274,6 @@ export default class Input extends React.Component {
     fetchSuggestions = (url) => {
         fetch(url).then((res) => res.json()).then((data) => {
             let temp = []
-            console.log(data)
             for (let i = 0; i < 5; i++) {
                 const res = data.results[i]
                 temp.push({title: res.title, id: res.id, date: res.release_date, vote: res.vote_average, poster: res.poster_path})
@@ -278,11 +283,12 @@ export default class Input extends React.Component {
     }
 
     fetchMovie = (url) => {
+        window.scroll({top: 0, left: 0, behavior: 'smooth'});
         let tempGenres = [],
-            tempMainActors = [],
             tempActors = [],
-            tempCrew = [],
             tempRecommendations = [],
+            tempProdCompanies = [],
+            tempProdCountries = [],
             tempDirector = {},
             tempReleaseDate = '',
             tempDate = [],
@@ -305,22 +311,23 @@ export default class Input extends React.Component {
                 .credits
                 .cast
                 .map((actor, i) => {
-                    tempActors.push({character: actor.character, name: actor.name, photo: actor.profile_path})
-                    if (i < 4) {
-                        tempMainActors.push({character: data.credits.cast[i].character, name: data.credits.cast[i].name, photo: data.credits.cast[i].profile_path})
+                    if (i < 11) {
+                        tempActors.push({character: actor.character, name: actor.name, photo: actor.profile_path, gender: actor.gender})
+                    } else {
+                        return
                     }
                 })
             data
                 .credits
                 .crew
                 .map((crew, i) => {
-                    tempCrew.push({name: crew.name, job: crew.job, department: crew.department, photo: crew.profile_path})
                     if (tempDirector.name == undefined && crew.job == 'Director') {
                         tempDirector = {
-                            name: data.credits.crew[i].name,
-                            job: data.credits.crew[i].job,
-                            photo: data.credits.crew[i].profile_path
+                            name: crew.name,
+                            job: crew.job,
+                            photo: crew.profile_path
                         }
+                        return
                     }
                 })
             data
@@ -332,7 +339,7 @@ export default class Input extends React.Component {
                         newDateString = ''
                     newReleaseDate = movie.release_date
                     newReleaseDate += '-'
-                    if (i < 6) {
+                    if (i < 5) {
                         for (let i = 0; i < newReleaseDate.length; i++) {
                             if (newReleaseDate[i] != '-') {
                                 newDateString += newReleaseDate[i]
@@ -354,32 +361,52 @@ export default class Input extends React.Component {
                         return
                     }
                 })
+            data
+                .production_companies
+                .map(company => {
+                    tempProdCompanies.push(company.name)
+                })
+            data
+                .production_countries
+                .map(country => {
+                    tempProdCountries.push(country.name)
+                });
             this.setState({
                 homepage: false,
                 popular: false,
                 top: false,
                 upcoming: false,
                 display: [],
+                status: data.status,
                 movieID: data.id,
                 title: data.title,
                 originalTitle: data.original_title,
                 director: tempDirector,
-                mainActors: tempMainActors,
                 actors: tempActors,
-                crew: tempCrew,
                 recommendations: tempRecommendations,
                 date: `${months[parseInt(tempDate[1]) - 1]} ${tempDate[2]}, ${tempDate[0]}`,
                 tagline: data.tagline,
                 overview: data.overview,
-                budget: data.budget,
-                revenue: data.revenue,
+                budget: data
+                    .budget
+                    .toFixed(1)
+                    .replace(/(\d)(?=(\d{3})+\.)/g, '$1,'),
+                revenue: data
+                    .revenue
+                    .toFixed(1)
+                    .replace(/(\d)(?=(\d{3})+\.)/g, '$1,'),
                 runtime: data.runtime,
                 adult: data.adult,
+                language: data.original_language,
+                productionCountries: tempProdCountries,
+                productionCompanies: tempProdCompanies,
                 vote: data.vote_average,
-                posterPath: data.poster_path,
-                backdropPath: data.backdrop_path,
+                voteCount: data.vote_count,
+                poster: data.poster_path,
+                backdrop: data.backdrop_path,
                 genres: tempGenres
             })
+            console.log(this.state)
         }).catch((err) => console.log('Movie not found'))
     }
 
@@ -410,12 +437,18 @@ export default class Input extends React.Component {
     renderSuggestion = (suggestion) => {
         let temp = ''
         for (let i = 0; i < 4; i++) {
-            temp += suggestion.date[i]
+            if (suggestion.date[i] == undefined) {
+                temp += '-'
+            } else {
+                temp += suggestion.date[i]
+            }
         }
-        let poster = 'https://image.tmdb.org/t/p/w92'
         return (
             <div className='box-suggestion'>
-                {suggestion.poster != null && <img src={poster + suggestion.poster} alt="" className='box-image'/>}
+                <img
+                    src={suggestion.poster == null ? `${nullw92}` : `https://image.tmdb.org/t/p/w92${suggestion.poster}`}
+                    alt=""
+                    className='box-image'/>
                 <div className='box-title'>
                     <span>
                         {suggestion.title}

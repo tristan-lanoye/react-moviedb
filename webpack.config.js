@@ -34,8 +34,7 @@ module.exports = {
     module: {
         rules: [{
                 test: /\.jsx?/,
-                // exclude: [/node_modules/, path.resolve(__dirname, './src/lib')],
-                // exclude: /node_modules/,
+                exclude: [/node_modules/, path.resolve(__dirname, './src/lib')],
                 use: 'babel-loader',
             },
             {
@@ -45,23 +44,23 @@ module.exports = {
             {
                 test: /\.(jpe?g|png|gif|svg)$/i,
                 use: [
-                    'file-loader?name=favicon/[name].[ext]',
+                    'file-loader?name=images/[name].[ext]',
                     'image-webpack-loader'
                 ]
             },
             {
                 test: /\.(xml|json|ico)$/i,
                 use: [
-                    'file-loader?name=favicon/[name].[ext]',
+                    'file-loader?name=images/[name].[ext]',
                 ]
             }
         ]
     },
     devServer: {
         contentBase: path.join(__dirname, 'docs'),
-        // compress: true,
+        compress: true,
         hot: true,
-        // stats: 'errors-only',
+        stats: 'errors-only',
         open: true
     },
     plugins: [
@@ -79,7 +78,7 @@ module.exports = {
             template: './src/index.ejs'
         }),
         new webpack.HotModuleReplacementPlugin(),
-        new webpack.NamedModulesPlugin()
-        // new UglifyJsPlugin()
+        new webpack.NamedModulesPlugin(),
+        new UglifyJsPlugin()
     ]
 }

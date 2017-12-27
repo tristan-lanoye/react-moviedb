@@ -1,21 +1,49 @@
 @import '../utils/_variables.scss';
-
 .footer {
+    display: grid;
+    grid-gap: 1.5rem;
+    justify-items: center;
     font-family: $barlow;
     color: $grey;
     opacity: 0.5;
     font-size: 0.9rem;
-    padding: 3rem 0rem;
+    padding-top: 3rem;
+    padding-bottom: 2rem;
+    .scroll-top {
+        padding: 1rem;
+        transition: 0.2s color ease;
+        &:hover {
+            color: $green;
+            cursor: pointer;
+        }
+    }
+    div.title {
+        padding: 0rem 0.5rem;
+        opacity: 0.7;
+    }
     a {
-        span{
+        span {
             padding: 0rem 0.5rem;
             transition: all 0.2s ease;
         }
         &:hover {
             span {
-                color: $white; 
+                color: $white;
                 opacity: 0.7;
             }
         }
+    }
+    &:after {
+        content: "";
+        position: absolute;
+        bottom: 90%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 75%;
+        height: 1px;
+        background: rgba(12, 132, 134, 0.2);
+        backface-visibility: hidden;
+    }
+    @media screen and (max-width: 500px) {
     }
 }

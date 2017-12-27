@@ -1,7 +1,6 @@
-@import "../utils/_variables.scss"; 
-
+@import "../utils/_variables.scss";
 html {
-    min-height: 100%; 
+    min-height: 100%;
 }
 
 html,
@@ -15,7 +14,11 @@ body {
 }
 
 a {
-    text-decoration: none; 
+    text-decoration: none;
+}
+
+.upper {
+    text-transform: uppercase;
 }
 
 .header {
@@ -35,9 +38,18 @@ a {
     }
 }
 
+.header-logo {
+    transition: 0.2s opacity ease; 
+    will-change: opacity; 
+    &:hover {
+        cursor: pointer;
+        opacity: 0.7;
+    }
+}
+
 .center-children {
-    display: flex; 
-    align-items: center; 
+    display: flex;
+    align-items: center;
     justify-content: center;
 }
 
@@ -47,16 +59,100 @@ a {
 
 .smoke-screen {
     position: fixed;
-    top: 0; 
-    left: 0; 
-    width: 100%; 
-    height: 100%; 
-    background: #111111; 
-    opacity: 0.90; 
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #111111;
+    opacity: 0.90;
     z-index: 0;
-  }
+}
 
-  .fa-star {
-    font-size: 0.8rem; 
+.fa-star {
+    font-size: 0.8rem;
     color: $green;
+}
+
+.infos-container {
+    position: relative;
+    overflow: hidden;
+    height: 100%;
+    .infos-box {
+        display: grid;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        text-align: center;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        transition: 0.2s opacity ease;
+        will-change: opacity;
+        z-index: 10;
+        .infos-one {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            color: $grey;
+            opacity: 0.7;
+            padding: 0.8rem 0rem;
+        }
+        .infos-two {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0rem 1rem;
+            text-align: center;
+            color: $grey;
+            font-size: 1.1rem;
+        }
+        .infos-three {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            padding: 0rem 1rem;
+            .fa-star {
+                position: relative;
+                bottom: 1px;
+                opacity: 0.7;
+            }
+            span {
+                padding: 0.5rem;
+            }
+        }
+    }
+    &:before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(2, 2, 2, 0.9);
+        opacity: 0;
+        transition: 0.2s opacity ease;
+        will-change: opacity;
+        z-index: 5;
+    }
+    img {
+        width: 100%;
+        transition: 0.2s transform ease;
+        will-change: transform;
+    }
+    &:hover {
+        cursor: pointer;
+        .infos-box {
+            opacity: 1;
+        }
+        &:before {
+            opacity: 1;
+        }
+        img {
+            transform: scale(1.05);
+        }
+    }
 }

@@ -1,0 +1,23 @@
+@import "../utils/_variables.scss";
+.grid-details {
+    position: relative;
+    grid-area: details;
+    display: grid;
+    grid-gap: 1rem;
+    .title {
+        opacity: 0.8;
+        font-size: 2rem;
+        padding-top: 2rem;
+        padding-bottom: 1rem;
+    }
+    .detail-container {
+        .detail-title {
+            font-size: 1.1rem;
+            padding-right: 0.4rem;
+            color: $green;
+        }
+        .detail-value {
+            opacity: 0.9;
+        }
+    }
+}

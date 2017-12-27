@@ -1,5 +1,5 @@
 import React from 'react'
-import Input from './input.jsx'
+import Input from './Input.jsx'
 
 export default class App extends React.Component {
     render() {

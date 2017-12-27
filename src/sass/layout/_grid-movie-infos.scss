@@ -1,0 +1,75 @@
+@import "../utils/_variables.scss";
+.grid-infos {
+    grid-area: infos;
+    padding-left: 2.2rem;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(7, auto) 0.8fr;
+    grid-row-gap: 1rem;
+    .movie-title {
+        font-size: 3.5rem;
+    }
+    .movie-tagline {
+        font-size: 2rem;
+        color: $green;
+    }
+    .movie-overview {
+        font-size: 1.3rem;
+        color: $grey;
+        opacity: 0.9;
+    }
+    .movie-infos {
+        position: relative;
+        .movie-date,
+        .movie-runtime,
+        .movie-vote {
+            padding-right: 1rem;
+        }
+    }
+    .movie-genres {
+        opacity: 0.7;
+    }
+    .movie-director {
+        .director-job {
+            font-size: 1.1rem;
+            padding-right: 0.4rem;
+            color: $green;
+        }
+        .director-name {
+            opacity: 0.9;
+        }
+    }
+    .movie-actors {
+        .main-cast {
+            font-size: 1.1rem;
+            padding-right: 0.4rem;
+            line-height: 1rem;
+            color: $green;
+        }
+        .actor {
+            opacity: 0.9;
+        }
+    }
+    .scroll-details {
+        span {
+            position: relative;
+            opacity: 0.8;
+            padding: 1rem 0rem;
+            transition: opacity 0.2s ease;
+            will-change: opacity;
+            &:before {
+                content: "";
+                position: absolute;
+                top: 80%;
+                left: 0;
+                width: 100%;
+                height: 1.5px;
+                background: $green;
+            }
+            &:hover {
+                cursor: pointer;
+                opacity: 0.6;
+            }
+        }
+    }
+}

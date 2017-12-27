@@ -1,0 +1,25 @@
+@import "../utils/_variables.scss";
+.grid-recommendations {
+    grid-area: recommendations;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); // grid-template-rows: auto auto;
+    grid-gap: 2rem;
+    .title {
+        grid-column: 1 / 6;
+        font-size: 2rem;
+        opacity: 0.8;
+        padding-top: 2rem;
+    }
+    @media screen and (max-width: 1100px) {
+        grid-template-columns: repeat(3, 1fr);
+        .title {
+            grid-column: 1 / 4;
+        }
+    }
+    @media screen and (max-width: 700px) {
+        grid-template-columns: repeat(2, 1fr);
+        .title {
+            grid-column: 1 / 3;
+        }
+    }
+}
