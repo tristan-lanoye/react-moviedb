@@ -9,6 +9,13 @@
     font-size: 0.9rem;
     padding-top: 3rem;
     padding-bottom: 2rem;
+    
+    .portfolio-link {
+        display: inline-block;
+        padding: 0 5px;
+        text-decoration: underline;
+    }
+
     .scroll-top {
         padding: 1rem;
         transition: 0.2s color ease;

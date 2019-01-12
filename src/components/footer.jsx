@@ -7,7 +7,9 @@ export default class Footer extends React.Component {
                 <div className='scroll-top' onClick={this.handleClick}>
                     <span className="fas fa-arrow-up"></span>
                 </div>
-                <div className='title'>Designed and developed by Tristan Lanoye</div>
+                <div className='title'>Designed and developed by 
+                    <a href='https://www.tristan-lanoye.com' className="portfolio-link" target='blank'>Tristan Lanoye</a>
+                </div>
                 <a href='https://github.com/tristan-lanoye/react-moviedb' target='blank'>
                     <span>View code on Github</span>
                 </a>
