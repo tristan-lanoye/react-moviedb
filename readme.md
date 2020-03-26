@@ -4,7 +4,7 @@ React MovieDB is a movie search engine made with ReactJS and powered by [The Mov
 
 ## Demo
 
-https://www.tristan-lanoye.com/lab/react-moviedb/
+https://www.lab.tristan-lanoye.com/react-moviedb/
 
 ## Tools 
 
